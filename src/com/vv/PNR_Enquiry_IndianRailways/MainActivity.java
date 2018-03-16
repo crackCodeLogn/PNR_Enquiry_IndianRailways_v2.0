@@ -1,6 +1,7 @@
 package com.vv.PNR_Enquiry_IndianRailways;
 
 import com.vv.PNR_Enquiry_IndianRailways.HttpsAcquirer.PNR_EnquirerHttps;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,12 +14,20 @@ import java.io.IOException;
  * @version 1.0
  * @since 01-08-2017
  * @lastMod 16-03-2018
+ * @lastMod_details
+ *         -> Changes made in order to accomodate the usage of checker framework's annotations
+ *         -> Changing the entire calling procedure for the initial GUI, i.e. passing and returning JFrame in MainActivity_setUI which was
+ *         originally a normal constructor which was called by the Jframe and the gui was set up
+ *         -> line 68 modified, as the PNR_EnquirerHttps class underwent a structural change
  */
 public class MainActivity extends JFrame {
 
     private static final JTextField textPNR = new JTextField(10);
+    @Nullable
     private static JButton buttonSearch = null;
+    @Nullable
     private static JButton buttonExit = null;
+    @Nullable
     private static JButton buttonReset = null;
 
     public static boolean disableAll = false;
@@ -134,26 +143,14 @@ public class MainActivity extends JFrame {
     }
 
     /**
-     * Locking up the interface whilst the request is being processed
-     */
-    public void performDisabling() {
-        System.out.println("Inside the disabling function");
-        textPNR.setEnabled(false);
-
-        buttonSearch.setEnabled(false);
-        buttonExit.setEnabled(false);
-        buttonReset.setEnabled(false);
-    }
-
-    /**
      * Switches on the interface, so that the next input can be taken
      */
     public static void performEnabling() {
         textPNR.setEnabled(true);
 
-        buttonSearch.setEnabled(true);
-        buttonExit.setEnabled(true);
-        buttonReset.setEnabled(true);
+        if (buttonSearch != null) buttonSearch.setEnabled(true);
+        if (buttonExit != null) buttonExit.setEnabled(true);
+        if (buttonReset != null) buttonReset.setEnabled(true);
     }
 
     public static void main(String[] args) {
@@ -166,7 +163,8 @@ public class MainActivity extends JFrame {
                 frame = a1.MainActivity_setUI(frame);
                 frame.setVisible(true);
                 frame.pack();
-                frame.setLocationRelativeTo(null);
+                //frame.setLocationRelativeTo(null);
+                frame.setLocationRelativeTo(new JFrame());
                 try {
                     frame.setIconImage(new ImageIcon(Toolkit.getDefaultToolkit().createImage(MainActivity.class.getResource(smallLogoPath))).getImage());
                 } catch (Exception npe1) {
@@ -175,5 +173,16 @@ public class MainActivity extends JFrame {
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             }
         });
+    }
+
+    /**
+     * Locking up the interface whilst the request is being processed
+     */
+    public void performDisabling() {
+        System.out.println("Inside the disabling function");
+        textPNR.setEnabled(false);
+        if (buttonSearch != null) buttonSearch.setEnabled(false);
+        if (buttonExit != null) buttonExit.setEnabled(false);
+        if (buttonReset != null) buttonReset.setEnabled(false);
     }
 }

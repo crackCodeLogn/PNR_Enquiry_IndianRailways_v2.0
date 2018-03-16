@@ -8,8 +8,11 @@ import java.util.List;
  * @version 1.0
  * @since 04-08-2017
  * @lastMod 16-03-2018
+ * @lastMod_details
+ *      -> Changes made in order to accomodate the usage of checker framework's annotations
  */
 
+//@SuppressWarnings("initialization.fields.uninitialized")
 public class PassengerList {
     private List<Passenger> listOfPassengers;
 
@@ -22,6 +25,7 @@ public class PassengerList {
     }
 
     public PassengerList() {
-
+        listOfPassengers = new ArrayList<>();
+        //to deal with the suppress warning
     }
 }

@@ -3,6 +3,8 @@ package com.vv.PNR_Enquiry_IndianRailways.HttpsAcquirer;
 import com.vv.PNR_Enquiry_IndianRailways.LoggerFormatter;
 import com.vv.PNR_Enquiry_IndianRailways.MapOfClassOfTravel;
 import com.vv.PNR_Enquiry_IndianRailways.Model.Passenger;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.swing.*;
@@ -17,25 +19,33 @@ import java.util.List;
 /**
  * This performs the dirty work of checking which PNR numbers are active and which can be used for debugging.
  * Also, deals with the extraction of the new format of the webpage, as this format is needed for crawling.
- * <p>
+ *
  * This is a stand alone class for main logic testing and maintaining,
  * and the refined changes are reflected in the
+ * @see PNR_EnquirerHttps
  *
  * @author Vivek
  * @version 1.0
- * @lastMod 16-03-2018
- * @see PNR_EnquirerHttps
  * @since 12-03-2018
+ * @lastMod 16-03-2018
+ * @lastMod_Details
+ *      -> Annotated with checker framework requirement
+ *      -> Major structural overhaul :
+ *             -- Eradicating the use of the constructor and directly linking to the @function PNR_EnquirerHttpsRunner()
+ *             -- connection linkage line commenting from line 108 to line 117
+ *             -- Shifting parent component of the JOptionPane in line 294 from null to independantForJOptionPane
  */
 
 public class DirtyRunner {
 
+    private JFrame independantForJOptionPane = new JFrame();
     static ArrayList<String> faultyPNR = new ArrayList<String>();
+    //@Nullable static ArrayList<String> faultyPNR = null;
 
     /**
      * This was a ranged sequence in order to facilitate wide analysis of the line numbers and ascertain
      * whether was the current version of the site, it'll work or break.
-     * <p>
+     *
      * This runs independent from the entire program, and is specifically for tweaking around
      *
      * @param args
@@ -73,7 +83,7 @@ public class DirtyRunner {
      * @param requestedPNR
      * @throws IOException
      */
-    public void PNR_EnquirerHttpsRunner(final String requestedPNR) throws IOException {
+    public void PNR_EnquirerHttpsRunner(@NonNull final String requestedPNR) throws IOException {
         java.util.logging.Logger logger = java.util.logging.Logger.getLogger(PNR_EnquirerHttps.class.getName());
         new MapOfClassOfTravel();
         //initializing the map which stores the class and their corresponding description
@@ -82,7 +92,7 @@ public class DirtyRunner {
 
         int responseCode = 404;
 
-        HttpsURLConnection httpsURLConnection = null;
+        @Nullable HttpsURLConnection httpsURLConnection = null;
         URL url = new URL("https://www.railyatri.in/pnr-status/" + requestedPNR); //this https enabled site was allowing automated data extraction without giving any forbidden access response code
         //logger.info("URL : " + url.toString());
 
@@ -95,6 +105,7 @@ public class DirtyRunner {
             //logger.info("Code received : " + responseCode);
             if (responseCode == HttpsURLConnection.HTTP_OK) {
                 //logger.info("Connection established successfully!!");
+                /*
             }
         } catch (Exception e) {
             //logger.info("Connection establishment failed... \nException : " + e);
@@ -103,6 +114,7 @@ public class DirtyRunner {
         //logger.info("Establishing inflow path now, if possible...");
         try {
             if (responseCode == HttpsURLConnection.HTTP_OK) {
+            */
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(httpsURLConnection.getInputStream()));
                 int lineNo = 1, numberOfPassengers = 0, baseLineMark = 0;
                 String trainNumber = "", trainName = "", boardingStation = "", destinationStation = "", boardingDate = "", classOfTravel = "", chartStatus = "";
@@ -232,7 +244,7 @@ public class DirtyRunner {
                         //for (; localPointer < passengerDataToBeProcessed.size(); localPointer += 22) {
                         int tr = 0;
                         boolean shifter = true;
-                        Passenger holder = null;
+                        @Nullable Passenger holder = null;
                         String elemental = "";
                         for (; localPointer < passengerDataToBeProcessed.size(); localPointer++) {
                             //for this version of the website, shifting the extraction on the basis of the string
@@ -250,8 +262,10 @@ public class DirtyRunner {
                                     shifter = false;
                                 } else {
                                     //passenger.setCurrentStatus(passengerDataToBeProcessed.get(localPointer + 6).trim());
-                                    holder.setCurrentStatus(elemental);
-                                    listOfPassengers.add(holder);
+                                    if (holder != null) {
+                                        holder.setCurrentStatus(elemental);
+                                        listOfPassengers.add(holder);
+                                    }
                                     shifter = true;
                                 }
                             }
@@ -276,7 +290,8 @@ public class DirtyRunner {
                 logger.info("No reading of webpage as connection not ok!");
                 logger.info("Connection response code : " + responseCode);
                 Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(null, "No Internet Connectivity or the server is down", "Error", JOptionPane.ERROR_MESSAGE);
+                //JOptionPane.showMessageDialog(null, "No Internet Connectivity or the server is down", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(independantForJOptionPane, "No Internet Connectivity or the server is down", "Error", JOptionPane.ERROR_MESSAGE);
             }
             httpsURLConnection.disconnect();
         } catch (Exception e) {

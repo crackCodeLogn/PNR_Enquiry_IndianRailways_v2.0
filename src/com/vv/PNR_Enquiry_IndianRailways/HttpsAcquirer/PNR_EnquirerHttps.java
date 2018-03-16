@@ -6,6 +6,7 @@ import com.vv.PNR_Enquiry_IndianRailways.MainActivity;
 import com.vv.PNR_Enquiry_IndianRailways.MapOfClassOfTravel;
 import com.vv.PNR_Enquiry_IndianRailways.Model.Passenger;
 import com.vv.PNR_Enquiry_IndianRailways.Model.PassengerList;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.swing.*;
@@ -24,8 +25,14 @@ import static com.vv.PNR_Enquiry_IndianRailways.MainActivity.smallLogoPath;
  *
  * @author Vivek
  * @version 1.0
- * @lastMod 16-03-2018
  * @since 01-08-2017
+ * @lastMod 16-03-2018
+ * @lastMod_Details
+ *      -> Annotated with checker framework requirement
+ *      -> Major structural overhaul :
+ *             -- Eradicating the use of the constructor and directly linking to the function {@link #PNR_EnquirerHttpsRunner(String)}
+ *             -- connection linkage line commenting from line 79 to line 89
+ *             -- Shifting parent component of the JOptionPane in line 343 and 350 from null to independantForJOptionPane
  */
 public class PNR_EnquirerHttps {
 
@@ -39,6 +46,7 @@ public class PNR_EnquirerHttps {
         }
     }
     */
+    private JFrame independantForJOptionPane = new JFrame();
 
     /**
      * Main Logic
@@ -55,7 +63,7 @@ public class PNR_EnquirerHttps {
 
         int responseCode = 404;
 
-        HttpsURLConnection httpsURLConnection = null;
+        @Nullable HttpsURLConnection httpsURLConnection = null;
         URL url = new URL("https://www.railyatri.in/pnr-status/" + requestedPNR); //this https enabled site was allowing automated data extraction without giving any forbidden access response code
         logger.info("URL : " + url.toString());
 
@@ -68,6 +76,7 @@ public class PNR_EnquirerHttps {
             logger.info("Code received : " + responseCode);
             if (responseCode == HttpsURLConnection.HTTP_OK) {
                 logger.info("Connection established successfully!!");
+                /*
             }
         } catch (Exception e) {
             logger.info("Connection establishment failed... \nException : " + e);
@@ -77,6 +86,7 @@ public class PNR_EnquirerHttps {
         logger.info("Establishing inflow path now, if possible...");
         try {
             if (responseCode == HttpsURLConnection.HTTP_OK) {
+            */
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(httpsURLConnection.getInputStream()));
                 int lineNo = 1, numberOfPassengers = 0, baseLineMark = 0;
                 String trainNumber = "", trainName = "", boardingStation = "", destinationStation = "", boardingDate = "", classOfTravel = "", chartStatus = "";
@@ -281,8 +291,10 @@ public class PNR_EnquirerHttps {
                                 passenger.setBookingStatus(elemental);
                                 shifter = false;
                             } else {
-                                holder.setCurrentStatus(elemental);
-                                listOfPassengers.add(holder);
+                                if (holder != null) {
+                                    holder.setCurrentStatus(elemental);
+                                    listOfPassengers.add(holder);
+                                }
                                 shifter = true;
                             }
                         }
@@ -308,7 +320,7 @@ public class PNR_EnquirerHttps {
 
                             JFrame frame = new JFrame("PNR based ticket details");
                             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                            frame.setLocationRelativeTo(null);
+                            //frame.setLocationRelativeTo(null);
                             frame.getContentPane().add(new PNR_Form(requestedPNR, finalTrainNumber, finalTrainName, finalBoardingStation, finalDestinationStation, finalBoardingDate, finalClassOfTravel, finalChartStatus, passengerList).getUI());
 
                             // Create and set up the content pane.
@@ -327,13 +339,15 @@ public class PNR_EnquirerHttps {
                     logger.info("THIS PART SHALL NOT BE REACHED EVER");
                     //logger.info("No passengers, so no processing of their data!");
                     Toolkit.getDefaultToolkit().beep();
-                    JOptionPane.showMessageDialog(null, "PNR record doesn't exist!", "Error", JOptionPane.ERROR_MESSAGE);
+                    //JOptionPane.showMessageDialog(null, "PNR record doesn't exist!", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(independantForJOptionPane, "PNR record doesn't exist!", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
                 logger.info("No reading of webpage as connection not ok!");
                 logger.info("Connection response code : " + responseCode);
                 Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(null, "No Internet Connectivity or the server is down", "Error", JOptionPane.ERROR_MESSAGE);
+                //JOptionPane.showMessageDialog(null, "No Internet Connectivity or the server is down", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(independantForJOptionPane, "No Internet Connectivity or the server is down", "Error", JOptionPane.ERROR_MESSAGE);
             }
             httpsURLConnection.disconnect();
             //loopON = false;

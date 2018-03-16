@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="check" enabled="true">
+        <processor name="org.checkerframework.checker.nullness.NullnessChecker" />
+        <processorPath useClasspath="false">
+          <entry name="$USER_HOME$/checker-framework-2.4.0/checker/dist/checker.jar" />
+        </processorPath>
+        <module name="PNR_Enquiry_IndianRailways_v2.0" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_STRING" value="-Xbootclasspath/p:&quot;$CHECKERFRAMEWORK/checker/dist/jdk8.jar&quot;" />
+  </component>
+</project>
