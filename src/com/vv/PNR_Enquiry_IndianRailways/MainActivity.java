@@ -22,10 +22,6 @@ public class MainActivity extends JFrame {
     private static JButton buttonReset = null;
 
     public static boolean disableAll = false;
-    //public final static String smallLogoPath = "/src/main/java/com/vv/PNR_Enquiry_IndianRailways/raw/logoIR_medium256.jpg";
-    //public final static String smallLogoPath = "/com/vv/PNR_Enquiry_IndianRailways/raw/logoIR_medium256.jpg";
-    ////public final static String smallLogoPath = "/logoIR_medium256.jpg"; //image in the resources folder of the project
-    //public final static String smallLogoPath = "/logoIR_full1024.png"; //image in the resources folder of the project
     public final static String smallLogoPath = "/resources/logoIR_small32.png"; //image in the resources folder of the project
     public final static String mediumLogoPath = "/resources/logoIR_medium256.png"; //image in the resources folder of the project
     public final static String bigLogoPath = "/resources/logoIR_full1024.png"; //image in the resources folder of the project
@@ -37,7 +33,6 @@ public class MainActivity extends JFrame {
         final JLabel displayPNR = new JLabel("Enter the PNR ");
         frame.add(displayPNR);
 
-        //textPNR = new JTextField(10);
         frame.add(textPNR);
 
         buttonSearch = new JButton("SEARCH");
@@ -54,7 +49,6 @@ public class MainActivity extends JFrame {
                                     public void run() {
                                         disableAll = true;
                                         performDisabling();
-                                        //new PNR_EnquirerHttps(pnr);
                                         try {
                                             new PNR_EnquirerHttps().PNR_EnquirerHttpsRunner(pnr); //modified
                                         } catch (IOException e1) {
@@ -63,20 +57,6 @@ public class MainActivity extends JFrame {
                                     }
                                 }).start();
                             }
-                            /*
-                            if(!disableAll){
-                                disableAll = true;
-                                performDisabling();
-                                //PNR_EnquirerHttps.PNR_EnquirerHttpsRunner(pnr);
-                                new PNR_EnquirerHttps(pnr);
-
-                                /*
-                                while(PNR_EnquirerHttps.loopON){
-
-                                }
-
-                            }
-                            */
                         } catch (Exception e1) {
                             System.out.println("Exception occured : " + e1);
                         }

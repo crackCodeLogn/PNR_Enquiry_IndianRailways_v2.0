@@ -4,7 +4,7 @@ package com.vv.PNR_Enquiry_IndianRailways.Model;
  * @author Vivek
  * @version 1.0
  * @since 04-08-2017
- * @lastMod 16-03-2018
+ * @lastMod 17-03-2018
  */
 
 public class Passenger {
@@ -13,7 +13,8 @@ public class Passenger {
     private String currentStatus;
 
     public Passenger() {
-
+        bookingStatus = "";
+        currentStatus = "";
     }
 
     public int getNumber() {
@@ -39,13 +40,4 @@ public class Passenger {
     public void setCurrentStatus(String currentStatus) {
         this.currentStatus = currentStatus;
     }
-
-    /*
-    //was not being used
-    public Passenger(int number, String bookingStatus, String currentStatus){
-        this.number = number;
-        this.bookingStatus = bookingStatus;
-        this.currentStatus = currentStatus;
-    }
-    */
 }

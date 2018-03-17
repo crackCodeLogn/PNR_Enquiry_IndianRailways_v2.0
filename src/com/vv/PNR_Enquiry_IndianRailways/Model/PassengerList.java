@@ -22,6 +22,6 @@ public class PassengerList {
     }
 
     public PassengerList() {
-
+        listOfPassengers = new ArrayList<>();
     }
 }
