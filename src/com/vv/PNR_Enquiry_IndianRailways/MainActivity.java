@@ -16,6 +16,7 @@ import java.io.IOException;
  */
 public class MainActivity extends JFrame {
 
+    private static JFrame independantForJOptionPane = new JFrame();
     private static final JTextField textPNR = new JTextField(10);
     private static JButton buttonSearch = null;
     private static JButton buttonExit = null;
@@ -146,7 +147,7 @@ public class MainActivity extends JFrame {
                 frame = a1.MainActivity_setUI(frame);
                 frame.setVisible(true);
                 frame.pack();
-                frame.setLocationRelativeTo(null);
+                frame.setLocationRelativeTo(independantForJOptionPane);
                 try {
                     frame.setIconImage(new ImageIcon(Toolkit.getDefaultToolkit().createImage(MainActivity.class.getResource(smallLogoPath))).getImage());
                 } catch (Exception npe1) {

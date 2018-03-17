@@ -200,7 +200,7 @@ public class PNR_EnquirerHttps {
 
                             JFrame frame = new JFrame("PNR based ticket details");
                             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                            frame.setLocationRelativeTo(null);
+                            frame.setLocationRelativeTo(independantForJOptionPane);
                             frame.getContentPane().add(new PNR_Form(requestedPNR, finalTrainNumber, finalTrainName, finalBoardingStation, finalDestinationStation, finalBoardingDate, finalClassOfTravel, finalChartStatus, passengerList).getUI());
 
                             // Create and set up the content pane.
