@@ -6,6 +6,7 @@ import com.vv.PNR_Enquiry_IndianRailways.MainActivity;
 import com.vv.PNR_Enquiry_IndianRailways.MapOfClassOfTravel;
 import com.vv.PNR_Enquiry_IndianRailways.Model.Passenger;
 import com.vv.PNR_Enquiry_IndianRailways.Model.PassengerList;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.swing.*;
@@ -46,7 +47,7 @@ public class PNR_EnquirerHttps {
 
         int responseCode = 404;
 
-        HttpsURLConnection httpsURLConnection = null;
+        @Nullable HttpsURLConnection httpsURLConnection = null;
         URL url = new URL("https://www.railyatri.in/pnr-status/" + requestedPNR); //this https enabled site was allowing automated data extraction without giving any forbidden access response code
         logger.info("URL : " + url.toString());
 
@@ -156,7 +157,7 @@ public class PNR_EnquirerHttps {
                     int localPointer = 0;
                     int tr = 0;
                     boolean shifter = true;
-                    Passenger holder = null;
+                    @Nullable Passenger holder = null;
                     String elemental = "";
                     //Extracting the details of the passengers on the ticket
                     for (; localPointer < passengerDataToBeProcessed.size(); localPointer++) {

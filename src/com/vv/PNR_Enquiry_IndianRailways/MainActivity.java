@@ -1,6 +1,7 @@
 package com.vv.PNR_Enquiry_IndianRailways;
 
 import com.vv.PNR_Enquiry_IndianRailways.HttpsAcquirer.PNR_EnquirerHttps;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,9 +19,9 @@ public class MainActivity extends JFrame {
 
     private static JFrame independantForJOptionPane = new JFrame();
     private static final JTextField textPNR = new JTextField(10);
-    private static JButton buttonSearch = null;
-    private static JButton buttonExit = null;
-    private static JButton buttonReset = null;
+    private static @Nullable JButton buttonSearch = null;
+    private static @Nullable JButton buttonExit = null;
+    private static @Nullable JButton buttonReset = null;
 
     public static boolean disableAll = false;
     public final static String smallLogoPath = "/resources/logoIR_small32.png"; //image in the resources folder of the project

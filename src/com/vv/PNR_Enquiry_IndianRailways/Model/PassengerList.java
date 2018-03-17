@@ -1,5 +1,7 @@
 package com.vv.PNR_Enquiry_IndianRailways.Model;
 
+import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +19,7 @@ public class PassengerList {
         return listOfPassengers;
     }
 
+    @EnsuresNonNull({"listOfPassengers"})
     public void setListOfPassengers(List<Passenger> listOfPassengers) {
         this.listOfPassengers = listOfPassengers;
     }

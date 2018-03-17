@@ -1,5 +1,7 @@
 package com.vv.PNR_Enquiry_IndianRailways.Model;
 
+import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
+
 /**
  * @author Vivek
  * @version 1.0
@@ -29,6 +31,7 @@ public class Passenger {
         return bookingStatus;
     }
 
+    @EnsuresNonNull({"bookingStatus"})
     public void setBookingStatus(String bookingStatus) {
         this.bookingStatus = bookingStatus;
     }
@@ -37,6 +40,7 @@ public class Passenger {
         return currentStatus;
     }
 
+    @EnsuresNonNull({"currentStatus"})
     public void setCurrentStatus(String currentStatus) {
         this.currentStatus = currentStatus;
     }
