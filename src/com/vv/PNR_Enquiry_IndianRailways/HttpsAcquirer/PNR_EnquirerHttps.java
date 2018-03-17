@@ -171,8 +171,10 @@ public class PNR_EnquirerHttps {
                                 passenger.setBookingStatus(elemental);
                                 shifter = false;
                             } else {
-                                holder.setCurrentStatus(elemental);
-                                listOfPassengers.add(holder);
+                                if(holder!=null) {
+                                    holder.setCurrentStatus(elemental);
+                                    listOfPassengers.add(holder);
+                                }
                                 shifter = true;
                             }
                         }

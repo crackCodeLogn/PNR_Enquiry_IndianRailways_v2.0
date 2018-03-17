@@ -120,9 +120,9 @@ public class MainActivity extends JFrame {
         System.out.println("Inside the disabling function");
         textPNR.setEnabled(false);
 
-        buttonSearch.setEnabled(false);
-        buttonExit.setEnabled(false);
-        buttonReset.setEnabled(false);
+        if(buttonSearch!=null) buttonSearch.setEnabled(false);
+        if(buttonExit!=null) buttonExit.setEnabled(false);
+        if(buttonReset!=null) buttonReset.setEnabled(false);
     }
 
     /**
@@ -131,9 +131,9 @@ public class MainActivity extends JFrame {
     public static void performEnabling() {
         textPNR.setEnabled(true);
 
-        buttonSearch.setEnabled(true);
-        buttonExit.setEnabled(true);
-        buttonReset.setEnabled(true);
+        if(buttonSearch!=null) buttonSearch.setEnabled(true);
+        if(buttonExit!=null) buttonExit.setEnabled(true);
+        if(buttonReset!=null) buttonReset.setEnabled(true);
     }
 
     public static void main(String[] args) {
