@@ -30,6 +30,7 @@ import java.util.List;
 
 public class DirtyRunner {
 
+    private JFrame independantForJOptionPane = new JFrame();
     static ArrayList<String> faultyPNR = new ArrayList<String>();
 
     /**
@@ -216,7 +217,7 @@ public class DirtyRunner {
                 logger.info("No reading of webpage as connection not ok!");
                 logger.info("Connection response code : " + responseCode);
                 Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(null, "No Internet Connectivity or the server is down", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(independantForJOptionPane, "No Internet Connectivity or the server is down", "Error", JOptionPane.ERROR_MESSAGE);
             }
             httpsURLConnection.disconnect();
         } catch (Exception e) {

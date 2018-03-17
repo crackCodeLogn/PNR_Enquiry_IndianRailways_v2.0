@@ -29,6 +29,8 @@ import static com.vv.PNR_Enquiry_IndianRailways.MainActivity.smallLogoPath;
  */
 public class PNR_EnquirerHttps {
 
+    private JFrame independantForJOptionPane = new JFrame();
+
     /**
      * Main Logic
      *
@@ -215,13 +217,13 @@ public class PNR_EnquirerHttps {
                     logger.info("THIS PART SHALL NOT BE REACHED EVER");
                     //logger.info("No passengers, so no processing of their data!");
                     Toolkit.getDefaultToolkit().beep();
-                    JOptionPane.showMessageDialog(null, "PNR record doesn't exist!", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(independantForJOptionPane, "PNR record doesn't exist!", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
                 logger.info("No reading of webpage as connection not ok!");
                 logger.info("Connection response code : " + responseCode);
                 Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(null, "No Internet Connectivity or the server is down", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(independantForJOptionPane, "No Internet Connectivity or the server is down", "Error", JOptionPane.ERROR_MESSAGE);
             }
             httpsURLConnection.disconnect();
             //loopON = false;
