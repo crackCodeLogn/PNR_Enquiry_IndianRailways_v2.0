@@ -25,14 +25,13 @@ import static com.vv.PNR_Enquiry_IndianRailways.MainActivity.smallLogoPath;
  *
  * @author Vivek
  * @version 1.0
- * @since 01-08-2017
  * @lastMod 16-03-2018
- * @lastMod_Details
- *      -> Annotated with checker framework requirement
- *      -> Major structural overhaul :
- *             -- Eradicating the use of the constructor and directly linking to the function {@link #PNR_EnquirerHttpsRunner(String)}
- *             -- connection linkage line commenting from line 79 to line 89
- *             -- Shifting parent component of the JOptionPane in line 343 and 350 from null to independantForJOptionPane
+ * @lastMod_Details -> Annotated with checker framework requirement
+ * -> Major structural overhaul :
+ * -- Eradicating the use of the constructor and directly linking to the function {@link #PNR_EnquirerHttpsRunner(String)}
+ * -- connection linkage line commenting from line 79 to line 89
+ * -- Shifting parent component of the JOptionPane in line 343 and 350 from null to independantForJOptionPane
+ * @since 01-08-2017
  */
 public class PNR_EnquirerHttps {
 
@@ -47,6 +46,11 @@ public class PNR_EnquirerHttps {
     }
     */
     private JFrame independantForJOptionPane = new JFrame();
+
+    public static void performEnablingFromHere() {
+        MainActivity.disableAll = false;
+        MainActivity.performEnabling();
+    }
 
     /**
      * Main Logic
@@ -357,10 +361,5 @@ public class PNR_EnquirerHttps {
             performEnablingFromHere();
             //loopON = false;
         }
-    }
-
-    public static void performEnablingFromHere() {
-        MainActivity.disableAll = false;
-        MainActivity.performEnabling();
     }
 }

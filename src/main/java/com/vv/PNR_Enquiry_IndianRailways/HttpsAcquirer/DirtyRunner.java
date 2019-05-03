@@ -19,33 +19,32 @@ import java.util.List;
 /**
  * This performs the dirty work of checking which PNR numbers are active and which can be used for debugging.
  * Also, deals with the extraction of the new format of the webpage, as this format is needed for crawling.
- *
+ * <p>
  * This is a stand alone class for main logic testing and maintaining,
  * and the refined changes are reflected in the
- * @see PNR_EnquirerHttps
  *
  * @author Vivek
  * @version 1.0
- * @since 12-03-2018
  * @lastMod 16-03-2018
- * @lastMod_Details
- *      -> Annotated with checker framework requirement
- *      -> Major structural overhaul :
- *             -- Eradicating the use of the constructor and directly linking to the @function PNR_EnquirerHttpsRunner()
- *             -- connection linkage line commenting from line 108 to line 117
- *             -- Shifting parent component of the JOptionPane in line 294 from null to independantForJOptionPane
+ * @lastMod_Details -> Annotated with checker framework requirement
+ * -> Major structural overhaul :
+ * -- Eradicating the use of the constructor and directly linking to the @function PNR_EnquirerHttpsRunner()
+ * -- connection linkage line commenting from line 108 to line 117
+ * -- Shifting parent component of the JOptionPane in line 294 from null to independantForJOptionPane
+ * @see PNR_EnquirerHttps
+ * @since 12-03-2018
  */
 
 public class DirtyRunner {
 
-    private JFrame independantForJOptionPane = new JFrame();
     static ArrayList<String> faultyPNR = new ArrayList<String>();
+    private JFrame independantForJOptionPane = new JFrame();
     //@Nullable static ArrayList<String> faultyPNR = null;
 
     /**
      * This was a ranged sequence in order to facilitate wide analysis of the line numbers and ascertain
      * whether was the current version of the site, it'll work or break.
-     *
+     * <p>
      * This runs independent from the entire program, and is specifically for tweaking around
      *
      * @param args
