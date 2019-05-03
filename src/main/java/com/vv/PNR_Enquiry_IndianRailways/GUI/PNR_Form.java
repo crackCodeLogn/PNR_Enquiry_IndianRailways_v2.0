@@ -1,11 +1,12 @@
 package com.vv.PNR_Enquiry_IndianRailways.GUI;
 
 import com.vv.PNR_Enquiry_IndianRailways.MapOfClassOfTravel;
-import com.vv.PNR_Enquiry_IndianRailways.Model.*;
-//import com.vv.PNR_Enquiry_IndianRailways.Model.PassengerList;
+import com.vv.PNR_Enquiry_IndianRailways.Model.PassengerList;
 
 import javax.swing.*;
 import java.awt.*;
+
+//import com.vv.PNR_Enquiry_IndianRailways.Model.PassengerList;
 
 /**
  * the gridy and gridx distribution:-
@@ -16,7 +17,7 @@ import java.awt.*;
  * the weigthx -> horizontal spacing
  * <p>
  * insets -> for the border of the components. indicates the space that a container must leave at its edges.
- *
+ * <p>
  * This is the main output displayer, the final result GUI
  *
  * @author Vivek
@@ -218,16 +219,16 @@ public class PNR_Form {
         //                   {"2", "B3", "B3"}};
         int sizeOfListOfPassengers = listOfPassengers.getListOfPassengers().size();
         System.out.println("List of passengers from the gui part : " + sizeOfListOfPassengers);
-        String rows[][] = new String[sizeOfListOfPassengers][3];
+        String[][] rows = new String[sizeOfListOfPassengers][3];
         for (int i = 0; i < sizeOfListOfPassengers; i++) {
             rows[i][0] = String.valueOf(listOfPassengers.getListOfPassengers().get(i).getNumber());
-            if(listOfPassengers.getListOfPassengers().get(i).getBookingStatus()!=null)
+            if (listOfPassengers.getListOfPassengers().get(i).getBookingStatus() != null)
                 rows[i][1] = listOfPassengers.getListOfPassengers().get(i).getBookingStatus();
-            if(listOfPassengers.getListOfPassengers().get(i).getCurrentStatus()!=null)
+            if (listOfPassengers.getListOfPassengers().get(i).getCurrentStatus() != null)
                 rows[i][2] = listOfPassengers.getListOfPassengers().get(i).getCurrentStatus();
         }
 
-        String columns[] = {"Number", "Booking Status", "Current Status"};
+        String[] columns = {"Number", "Booking Status", "Current Status"};
         JTable displayTable = new JTable(rows, columns);
         JScrollPane scrollPane = new JScrollPane(displayTable);
         Dimension d = displayTable.getPreferredSize();
