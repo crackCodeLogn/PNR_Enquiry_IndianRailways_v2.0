@@ -2,11 +2,12 @@ package com.vv.PNR_Enquiry_IndianRailways;
 
 import com.vv.PNR_Enquiry_IndianRailways.HttpsAcquirer.PNR_EnquirerHttps;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 
 /**
@@ -21,15 +22,13 @@ import java.io.IOException;
  */
 public class MainActivity extends JFrame {
 
-    //public final static String smallLogoPath = "/src/main/java/com/vv/PNR_Enquiry_IndianRailways/raw/logoIR_medium256.jpg";
-    //public final static String smallLogoPath = "/com/vv/PNR_Enquiry_IndianRailways/raw/logoIR_medium256.jpg";
-    ////public final static String smallLogoPath = "/logoIR_medium256.jpg"; //image in the resources folder of the project
-    //public final static String smallLogoPath = "/logoIR_full1024.png"; //image in the resources folder of the project
-    public final static String smallLogoPath = "/resources/logoIR_small32.png"; //image in the resources folder of the project
-    public final static String mediumLogoPath = "/resources/logoIR_medium256.png"; //image in the resources folder of the project
-    public final static String bigLogoPath = "/resources/logoIR_full1024.png"; //image in the resources folder of the project
+    public final static String smallLogoPath = "/logoIR_small32.png";
+    public final static String mediumLogoPath = "/logoIR_medium256.png";
+    public final static String bigLogoPath = "/logoIR_full1024.png";
+    private final static Logger logger = LoggerFactory.getLogger(MainActivity.class);
     private static final JTextField textPNR = new JTextField(10);
     public static boolean disableAll = false;
+
     @Nullable
     private static JButton buttonSearch = null;
     @Nullable
@@ -49,24 +48,21 @@ public class MainActivity extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                //JFrame frame = new MainActivity();
-                MainActivity a1 = new MainActivity();
-                JFrame frame = new JFrame();
-                frame = a1.MainActivity_setUI(frame);
-                frame.setVisible(true);
-                frame.pack();
-                //frame.setLocationRelativeTo(null);
-                frame.setLocationRelativeTo(new JFrame());
-                try {
-                    frame.setIconImage(new ImageIcon(Toolkit.getDefaultToolkit().createImage(MainActivity.class.getResource(smallLogoPath))).getImage());
-                } catch (Exception npe1) {
-                    //the image was not found on the file path
-                }
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        SwingUtilities.invokeLater(() -> {
+            MainActivity mainActivity = new MainActivity();
+            JFrame frame = mainActivity.MainActivity_setUI(new JFrame());
+            frame.pack();
+            frame.setLocationRelativeTo(new JFrame());
+            try {
+
+                Image image = ImageIO.read(MainActivity.class.getResourceAsStream(smallLogoPath));
+                frame.setIconImage(image);
+            } catch (Exception e1) {
+                logger.error("Small logo path not found.. Error : ", e1);
+                System.exit(-1);
             }
+            frame.setVisible(true);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         });
     }
 
@@ -77,79 +73,61 @@ public class MainActivity extends JFrame {
         final JLabel displayPNR = new JLabel("Enter the PNR ");
         frame.add(displayPNR);
 
-        //textPNR = new JTextField(10);
         frame.add(textPNR);
 
         buttonSearch = new JButton("SEARCH");
-        buttonSearch.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                final String pnr = textPNR.getText();
-                if (pnr.length() != 0) {
-                    if (isPNR_Valid(pnr)) {
-                        try {
-                            if (!disableAll) {
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        disableAll = true;
-                                        performDisabling();
-                                        //new PNR_EnquirerHttps(pnr);
-                                        try {
-                                            new PNR_EnquirerHttps().PNR_EnquirerHttpsRunner(pnr); //modified
-                                        } catch (IOException e1) {
-                                            e1.printStackTrace();
-                                        }
-                                    }
-                                }).start();
-                            }
-                            /*
-                            if(!disableAll){
+        buttonSearch.addActionListener(e -> {
+            final String pnr = textPNR.getText();
+            if (pnr.length() != 0) {
+                if (isPNR_Valid(pnr)) {
+                    try {
+                        if (!disableAll) {
+                            new Thread(() -> {
                                 disableAll = true;
                                 performDisabling();
-                                //PNR_EnquirerHttps.PNR_EnquirerHttpsRunner(pnr);
-                                new PNR_EnquirerHttps(pnr);
-
-                                /*
-                                while(PNR_EnquirerHttps.loopON){
-
+                                try {
+                                    new PNR_EnquirerHttps().PNR_EnquirerHttpsRunner(pnr); //modified
+                                } catch (IOException e1) {
+                                    e1.printStackTrace();
                                 }
+                            }).start();
+                        }
+                        /*
+                        if(!disableAll){
+                            disableAll = true;
+                            performDisabling();
+                            //PNR_EnquirerHttps.PNR_EnquirerHttpsRunner(pnr);
+                            new PNR_EnquirerHttps(pnr);
+
+                            /*
+                            while(PNR_EnquirerHttps.loopON){
 
                             }
-                            */
-                        } catch (Exception e1) {
-                            System.out.println("Exception occured : " + e1);
+
                         }
-                    } else {
-                        System.out.println("Invalid PNR!");
-                        Toolkit.getDefaultToolkit().beep();
-                        JOptionPane.showMessageDialog(MainActivity.this, "Invalid PNR!!", "Error", JOptionPane.ERROR_MESSAGE);
+                        */
+                    } catch (Exception e1) {
+                        System.out.println("Exception occurred : " + e1);
                     }
                 } else {
-                    System.out.println("Empty!");
+                    System.out.println("Invalid PNR!");
                     Toolkit.getDefaultToolkit().beep();
-                    JOptionPane.showMessageDialog(MainActivity.this, "PNR length can't be 0!!", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(MainActivity.this, "Invalid PNR!!", "Error", JOptionPane.ERROR_MESSAGE);
                 }
+            } else {
+                System.out.println("Empty!");
+                Toolkit.getDefaultToolkit().beep();
+                JOptionPane.showMessageDialog(MainActivity.this, "PNR length can't be 0!!", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
         frame.add(buttonSearch);
 
         buttonExit = new JButton("EXIT");
-        buttonExit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
+        buttonExit.addActionListener(e -> System.exit(0));
         frame.add(buttonExit);
 
         buttonReset = new JButton("RESET");
-        buttonReset.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                textPNR.setText("");
-            }
-        });
+        buttonReset.addActionListener(e -> textPNR.setText(""));
         frame.add(buttonReset);
         return frame;
     }
