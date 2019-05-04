@@ -23,4 +23,5 @@ public class Constants {
     public static final int PNR_ENTRY_NUM_COLUMNS = 10;
     public static final int ZERO = 0;
     public static final int PNR_LENGTH = 10;
+    public static final int NA_INT = -1;
 }

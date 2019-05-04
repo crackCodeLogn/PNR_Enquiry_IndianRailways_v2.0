@@ -10,7 +10,7 @@ import java.util.Map;
  * @since 04-08-2017
  */
 public class MapOfClassOfTravel {
-    protected static Map<String, String> map = new HashMap<String, String>();
+    private static Map<String, String> map = new HashMap<>();
 
     /*
     public MapOfClassOfTravel(){
