@@ -1,14 +1,14 @@
 package com.vv.PNR_Enquiry_IndianRailways.HttpsAcquirer;
 
-import com.vv.PNR_Enquiry_IndianRailways.LoggerFormatter;
-import com.vv.PNR_Enquiry_IndianRailways.MapOfClassOfTravel;
 import com.vv.PNR_Enquiry_IndianRailways.Model.Passenger;
+import com.vv.PNR_Enquiry_IndianRailways.util.Helper;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.swing.*;
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -35,11 +35,13 @@ import java.util.List;
  * @since 12-03-2018
  */
 
+@Deprecated
 public class DirtyRunner {
 
-    static ArrayList<String> faultyPNR = new ArrayList<String>();
+    private static final Logger logger = LoggerFactory.getLogger(DirtyRunner.class);
+
+    static ArrayList<String> faultyPNR = new ArrayList<>();
     private JFrame independantForJOptionPane = new JFrame();
-    //@Nullable static ArrayList<String> faultyPNR = null;
 
     /**
      * This was a ranged sequence in order to facilitate wide analysis of the line numbers and ascertain
@@ -50,31 +52,19 @@ public class DirtyRunner {
      * @param args
      */
     public static void main(String[] args) throws IOException {
-        String startPNR = "8425045249";
-        String endPNR = "8425045250";
+        String startPNR = "8505631000";
+        String endPNR = "8505631005";
         long sPNR = Long.parseLong(startPNR);
         long ePNR = Long.parseLong(endPNR);
         int tr = 1;
 
         for (; sPNR <= ePNR; sPNR++, tr++) {
-            System.out.println("Sending in the entry number : " + tr + " --> " + sPNR);
-            //new DirtyRunner(Long.toString(sPNR));
+            logger.info("Sending in the entry number : {} --> ", tr, sPNR);
             new DirtyRunner().PNR_EnquirerHttpsRunner(Long.toString(sPNR));
         }
-        System.out.println("NUMBER OF FLUSHED / NOT ASSIGNED PNR : " + faultyPNR.size());
-        for (String fault : faultyPNR) {
-            System.out.println(fault);
-        }
+        logger.info("NUMBER OF FLUSHED / NOT ASSIGNED PNR : {}", faultyPNR.size());
+        faultyPNR.forEach(logger::info);
     }
-    /*
-    public DirtyRunner(@NonNull final String requestedPNR) {
-        try {
-            PNR_EnquirerHttpsRunner(requestedPNR);
-        } catch (IOException e) {
-            System.out.println("NEVER ACCESSED!!!");
-        }
-    }
-    */
 
     /**
      * Main logic
@@ -83,55 +73,31 @@ public class DirtyRunner {
      * @throws IOException
      */
     public void PNR_EnquirerHttpsRunner(@NonNull final String requestedPNR) throws IOException {
-        java.util.logging.Logger logger = java.util.logging.Logger.getLogger(PNR_EnquirerHttps.class.getName());
-        new MapOfClassOfTravel();
-        //initializing the map which stores the class and their corresponding description
-        logger = LoggerFormatter.formatTheLoggerOutput(logger);
-        //the above line should be written in each and every class where logging is to be used
+        int responseCode;
 
-        int responseCode = 404;
-
-        @Nullable HttpsURLConnection httpsURLConnection = null;
+        @Nullable HttpsURLConnection httpsURLConnection;
         URL url = new URL("https://www.railyatri.in/pnr-status/" + requestedPNR); //this https enabled site was allowing automated data extraction without giving any forbidden access response code
-        //logger.info("URL : " + url.toString());
-
-        //logger.info("Establishing connection now!");
         try {
             httpsURLConnection = (HttpsURLConnection) url.openConnection();
             httpsURLConnection.connect();
 
             responseCode = httpsURLConnection.getResponseCode();
-            //logger.info("Code received : " + responseCode);
             if (responseCode == HttpsURLConnection.HTTP_OK) {
-                //logger.info("Connection established successfully!!");
-                /*
-            }
-        } catch (Exception e) {
-            //logger.info("Connection establishment failed... \nException : " + e);
-        }
 
-        //logger.info("Establishing inflow path now, if possible...");
-        try {
-            if (responseCode == HttpsURLConnection.HTTP_OK) {
-            */
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(httpsURLConnection.getInputStream()));
-                int lineNo = 1, numberOfPassengers = 0, baseLineMark = 0;
+                int lineNo = 1, numberOfPassengers = 0;
                 String trainNumber = "", trainName = "", boardingStation = "", destinationStation = "", boardingDate = "", classOfTravel = "", chartStatus = "";
                 String line;
-                ArrayList<String> passengerDataToBeProcessed = new ArrayList<String>();
+                ArrayList<String> passengerDataToBeProcessed = new ArrayList<>();
 
                 boolean firstShot = false;
                 while ((line = bufferedReader.readLine()) != null) {
-                    //if(lineNo>=606 && lineNo<=692)
-                    //logger.info("Line number " + lineNo + " --> " + line);
-
+                    System.out.println(lineNo + " -->> " + line);
                     //if (lineNo >= 600) {
-                    if (lineNo >= 480) {
+                    if (false) {
                         String elemental = "";
-                        //logger.info(lineNo + " --> " + line);
 
                         try {
-                            //elemental = line.substring(line.indexOf('>'), line.lastIndexOf('<')).trim();
                             //below code considering that for every opening bracket in a line there is a closing brace on the same for the same
                             int i, endingTag = 0;
                             for (i = 0; i < line.length(); i++) {
@@ -148,10 +114,10 @@ public class DirtyRunner {
                                 }
                             }
                             elemental = elemental.substring(0, elemental.indexOf('<'));
-                            //System.out.println("Elemented extraction : "+elemental);
+                            logger.info("Elemented extraction : " + elemental);
 
                         } catch (Exception e2) {
-                            //System.out.println("\t\tException e2 occuring in string conversion, e2 : " + e2);
+                            logger.error("\t\tException e2 occuring in string conversion, e2 : " + e2);
                         }
 
                         //if (lineNo >= 620) break;
@@ -161,7 +127,6 @@ public class DirtyRunner {
                         //if (line.contains("PNR - " + requestedPNR)) {
                         if (line.contains("pnr-bold-txt") && !firstShot) {
                             //baseLineMark = lineNo + 3;
-                            baseLineMark = lineNo;
                             firstShot = true;
                         }
 
@@ -194,7 +159,7 @@ public class DirtyRunner {
                         /*
                         //this was for the older version of the site, when this repo was last updated 7 months ago
                         if (lineNo == baseLineMark) {
-                            System.out.println("PNR first step crossed at line number : " + lineNo + ", and the base mark : " + baseLineMark);
+                            logger.info("PNR first step crossed at line number : " + lineNo + ", and the base mark : " + baseLineMark);
                             trainNumber = line.substring(0, line.indexOf('-')).trim();
                             trainName = line.substring(line.indexOf('-') + 1).trim();
                         }
@@ -220,31 +185,23 @@ public class DirtyRunner {
                 try {
                     int num = Integer.parseInt(trainNumber);
                     //laying out the bones
-                    System.out.println("------------------------");
-                    System.out.println("train number : " + trainNumber);
-                    System.out.println("train name : " + trainName);
-                    System.out.println("from : " + boardingStation);
-                    System.out.println("to : " + destinationStation);
-                    System.out.println("date : " + boardingDate);
-                    System.out.println("class : " + classOfTravel);
-                    System.out.println("chart stat : " + chartStatus);
-                    System.out.println("NUMBER OF PASSENGERS : " + numberOfPassengers);
-                    //System.out.println("---");
-                    System.out.println();
-                    /*
-                    //Refining the verbose output
-                    for(String intermed : passengerDataToBeProcessed){
-                        System.out.println("\t"+intermed);
-                    }
-                    */
+                    logger.info("------------------------");
+                    logger.info("train number : " + trainNumber);
+                    logger.info("train name : " + trainName);
+                    logger.info("from : " + boardingStation);
+                    logger.info("to : " + destinationStation);
+                    logger.info("date : " + boardingDate);
+                    logger.info("class : " + classOfTravel);
+                    logger.info("chart stat : " + chartStatus);
+                    logger.info("NUMBER OF PASSENGERS : " + numberOfPassengers);
+                    logger.info("---");
                     List<Passenger> listOfPassengers = new ArrayList<Passenger>();
                     if (numberOfPassengers != 0) { //which shall never be true ideally
                         int localPointer = 0;
-                        //for (; localPointer < passengerDataToBeProcessed.size(); localPointer += 22) {
                         int tr = 0;
                         boolean shifter = true;
                         @Nullable Passenger holder = null;
-                        String elemental = "";
+                        String elemental;
                         for (; localPointer < passengerDataToBeProcessed.size(); localPointer++) {
                             //for this version of the website, shifting the extraction on the basis of the string
                             //logger.info(passengerDataToBeProcessed.get(localPointer));
@@ -271,26 +228,19 @@ public class DirtyRunner {
                         }
                         for (Passenger passenger : listOfPassengers) {
                             //logger.info(passenger.getNumber() + " :: " + passenger.getBookingStatus() + " :: " + passenger.getCurrentStatus());
-                            System.out.println(passenger.getNumber() + " :: " + passenger.getBookingStatus() + " :: " + passenger.getCurrentStatus());
+                            logger.info(passenger.getNumber() + " :: " + passenger.getBookingStatus() + " :: " + passenger.getCurrentStatus());
                         }
-                        System.out.println();
                     } else {
                         logger.info("THIS PART SHALL NOT BE REACHED EVER");
                     }
                 } catch (Exception e) {
-                    System.out.println("!!!!!!!!!!!!!!----------No record for this PNR----------!!!!!!!!!!!!!!");
-                    /*
-                    if(faultyPNR == null)
-                        faultyPNR = new ArrayList<String>();
-                        */
+                    logger.info("!!!!!!!!!!!!!!----------No record for this PNR----------!!!!!!!!!!!!!!");
                     faultyPNR.add(requestedPNR);
                 }
             } else {
                 logger.info("No reading of webpage as connection not ok!");
                 logger.info("Connection response code : " + responseCode);
-                Toolkit.getDefaultToolkit().beep();
-                //JOptionPane.showMessageDialog(null, "No Internet Connectivity or the server is down", "Error", JOptionPane.ERROR_MESSAGE);
-                JOptionPane.showMessageDialog(independantForJOptionPane, "No Internet Connectivity or the server is down", "Error", JOptionPane.ERROR_MESSAGE);
+                Helper.showErrorMsgDialog(independantForJOptionPane, "No Internet Connectivity or the server is down");
             }
             httpsURLConnection.disconnect();
         } catch (Exception e) {

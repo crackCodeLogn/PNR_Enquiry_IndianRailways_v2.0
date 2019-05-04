@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 import java.util.Objects;
 
 import static com.vv.PNR_Enquiry_IndianRailways.util.Constants.*;
@@ -44,7 +43,7 @@ public class PNR_Prompt extends JFrame {
         buttonSearch = new JButton(SEARCH);
         buttonSearch.addActionListener(e -> {
             final String pnr = textPNR.getText();
-            if (pnr.isEmpty()) {
+            if (!pnr.isEmpty()) {
                 if (isPNR_Valid(pnr)) {
                     try {
                         if (!disableAll) {
@@ -53,8 +52,8 @@ public class PNR_Prompt extends JFrame {
                                 performDisabling();
                                 try {
                                     new PNR_EnquirerHttps(this).PNR_EnquirerHttpsRunner(pnr); //modified
-                                } catch (IOException e1) {
-                                    e1.printStackTrace();
+                                } catch (Exception e1) {
+                                    logger.error("Error in the calling for PNR https enquiry : ", e1);
                                 }
                             }).start();
                         }

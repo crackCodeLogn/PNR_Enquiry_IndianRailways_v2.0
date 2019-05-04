@@ -3,6 +3,8 @@ package com.vv.PNR_Enquiry_IndianRailways;
 
 import com.vv.PNR_Enquiry_IndianRailways.GUI.PNR_Prompt;
 import com.vv.PNR_Enquiry_IndianRailways.util.Helper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 
@@ -14,6 +16,8 @@ import javax.swing.*;
  */
 public class MainActivity {
 
+    private static Logger logger = LoggerFactory.getLogger(MainActivity.class);
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame();
@@ -23,6 +27,8 @@ public class MainActivity {
             frame.pack();
             frame.setLocationRelativeTo(null);
             frame.setIconImage(Helper.smallIconForFrame);
+
+            logger.info("**** Launching PNR GUI now ****");
             frame.setVisible(true);
         });
     }

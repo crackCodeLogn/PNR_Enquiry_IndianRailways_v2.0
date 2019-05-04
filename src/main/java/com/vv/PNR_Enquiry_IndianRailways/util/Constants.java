@@ -36,4 +36,12 @@ public class Constants {
     public static final String DEST = "Dest";
     public static final String BOARDING_DATE = "Boarding Date";
     public static final String CLASS = "Class";
+    public static final String TRAIN_NAME_NAME_SPLIT = "NAME";
+    public static final String CLASS_TRAIN_NUMBER_NAME = " col-xs-12 train-info";
+    public static final String CLASS_EXTRACTION_POINT = "pnr-bold-txt";
+    public static final String CLASS_BOARDING_DESTINATION = "train-route";
+    public static final String CLASS_DATE_CLASS_TRAVEL = "boarding-detls";
+    public static final String CLASS_CHART_STATUS = "chart-status-txt";
+    public static final String CLASS_PSGN_STATS = "chart-stats";
+    public static final char SPLITTER_HYPHEN = '-';
 }
