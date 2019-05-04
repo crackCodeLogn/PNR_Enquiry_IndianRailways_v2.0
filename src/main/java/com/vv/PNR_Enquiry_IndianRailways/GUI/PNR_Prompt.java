@@ -22,18 +22,18 @@ public class PNR_Prompt extends JFrame {
 
     private static final Logger logger = LoggerFactory.getLogger(PNR_Prompt.class);
 
-    private static final JTextField textPNR = new JTextField(PNR_ENTRY_NUM_COLUMNS);
-    public static boolean disableAll = false;
+    private final JTextField textPNR = new JTextField(PNR_ENTRY_NUM_COLUMNS);
+    public boolean disableAll = false;
     @Nullable
-    private static JButton buttonSearch = null;
+    private JButton buttonSearch;
     @Nullable
-    private static JButton buttonExit = null;
-    @Nullable
-    private static JButton buttonReset = null;
+    private JButton buttonExit;
     private final FlowLayout flowLayout = new FlowLayout();
+    @Nullable
+    private JButton buttonReset;
 
     public PNR_Prompt(JFrame frame) {
-        frame.setTitle(PNR_ENQUIRER);
+        frame.setTitle(TITLE_PNR_ENQUIRER);
         frame.setLayout(flowLayout);
 
         final JLabel displayPNR = new JLabel(TEXT_PNR_PROMPT);
@@ -44,7 +44,7 @@ public class PNR_Prompt extends JFrame {
         buttonSearch = new JButton(SEARCH);
         buttonSearch.addActionListener(e -> {
             final String pnr = textPNR.getText();
-            if (pnr.length() != 0) {
+            if (pnr.isEmpty()) {
                 if (isPNR_Valid(pnr)) {
                     try {
                         if (!disableAll) {
@@ -52,14 +52,14 @@ public class PNR_Prompt extends JFrame {
                                 disableAll = true;
                                 performDisabling();
                                 try {
-                                    new PNR_EnquirerHttps().PNR_EnquirerHttpsRunner(pnr); //modified
+                                    new PNR_EnquirerHttps(this).PNR_EnquirerHttpsRunner(pnr); //modified
                                 } catch (IOException e1) {
                                     e1.printStackTrace();
                                 }
                             }).start();
                         }
                     } catch (Exception e1) {
-                        logger.error("Exception occurred : ", e1);
+                        logger.error("Exception occurred in outer thread gen : ", e1);
                     }
                 } else {
                     logger.warn("Invalid PNR!");
@@ -84,7 +84,7 @@ public class PNR_Prompt extends JFrame {
     /**
      * Switches on the interface, so that the next input can be taken
      */
-    public static void performEnabling() {
+    public void performEnabling() {
         logger.info("Enabling all");
         textPNR.setEnabled(true);
 
