@@ -26,16 +26,16 @@ import static com.vv.PNR_Enquiry_IndianRailways.util.Constants.*;
  * @version 1.0
  * @since 04-08-2017
  */
-public class PNR_Form {
+public class PNR_Result {
 
-    private final Logger logger = LoggerFactory.getLogger(PNR_Form.class);
+    private final Logger logger = LoggerFactory.getLogger(PNR_Result.class);
 
     private final GridBagLayout gridBagLayout = new GridBagLayout();
     private final JPanel mainPanel = new JPanel();
 
     private final String[] columns = {"Number", "Booking Status", "Current Status"};
 
-    public PNR_Form(String pnr, String trainNumber, String trainName, String boardingStation, String destinationStation, String boardingDate, String classOfTravel, String chartStatus, PassengerList listOfPassengers, MapOfClassOfTravel mapOfClassOfTravel) {
+    public PNR_Result(String pnr, String trainNumber, String trainName, String boardingStation, String destinationStation, String boardingDate, String classOfTravel, String chartStatus, PassengerList listOfPassengers, MapOfClassOfTravel mapOfClassOfTravel) {
         mainPanel.setLayout(gridBagLayout);
         GridBagConstraints gbc = new GridBagConstraints();
 

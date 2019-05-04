@@ -21,10 +21,12 @@ import static com.vv.PNR_Enquiry_IndianRailways.util.Constants.EMPTY_STR;
  * @since 04-05-2019
  */
 @RunWith(JUnit4.class)
-public class PNR_FormTest {
+public class PNR_ResultTest {
 
     private PassengerList passengerList;
     private MapOfClassOfTravel mapOfClassOfTravel;
+
+    private final int TIME_BEFORE_KILLING_GUI = 2000;
 
     @Before
     public void before() {
@@ -48,7 +50,7 @@ public class PNR_FormTest {
             JFrame frame = new JFrame("PNR sample product");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setLocationRelativeTo(null);
-            frame.getContentPane().add(new PNR_Form(EMPTY_STR, EMPTY_STR, EMPTY_STR, EMPTY_STR, EMPTY_STR, EMPTY_STR, EMPTY_STR, EMPTY_STR, passengerList, mapOfClassOfTravel).getUI());
+            frame.getContentPane().add(new PNR_Result(EMPTY_STR, EMPTY_STR, EMPTY_STR, EMPTY_STR, EMPTY_STR, EMPTY_STR, EMPTY_STR, EMPTY_STR, passengerList, mapOfClassOfTravel).getUI());
 
             // Display the window.
             frame.pack();
@@ -59,6 +61,6 @@ public class PNR_FormTest {
 
     @After
     public void tearDown() throws InterruptedException {
-        Thread.sleep(5000);
+        Thread.sleep(TIME_BEFORE_KILLING_GUI);
     }
 }
