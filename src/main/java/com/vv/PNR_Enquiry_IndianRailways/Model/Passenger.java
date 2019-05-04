@@ -21,6 +21,15 @@ public class Passenger {
     @NonNull
     private String currentStatus = EMPTY_STR;
 
+    public Passenger() {
+    }
+
+    public Passenger(int number, @NonNull String bookingStatus, @NonNull String currentStatus) {
+        this.number = number;
+        this.bookingStatus = bookingStatus;
+        this.currentStatus = currentStatus;
+    }
+
     public int getNumber() {
         return number;
     }

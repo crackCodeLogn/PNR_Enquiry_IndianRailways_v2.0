@@ -14,14 +14,23 @@ public class Constants {
     public static final String PNR_ENQUIRER = "PNR Enquiry";
     public static final String TEXT_PNR_PROMPT = "Enter the PNR ";
 
+    public static final int PNR_ENTRY_NUM_COLUMNS = 10;
+    public static final int ZERO = 0;
+    public static final int PNR_LENGTH = 10;
+    public static final int NA_INT = -1;
+
     public static final String SEARCH = "SEARCH";
     public static final String ERROR = "Error";
     public static final String EXIT = "EXIT";
     public static final String RESET = "RESET";
     public static final String EMPTY_STR = "";
-
-    public static final int PNR_ENTRY_NUM_COLUMNS = 10;
-    public static final int ZERO = 0;
-    public static final int PNR_LENGTH = 10;
-    public static final int NA_INT = -1;
+    public static final String CHART = "Chart";
+    public static final String PNR = "PNR";
+    public static final String TRAIN_NUMBER = "Train Number";
+    public static final String TRAIN_NAME = "Train Name";
+    public static final String FROM = "From";
+    public static final String TO = "To";
+    public static final String DEST = "Dest";
+    public static final String BOARDING_DATE = "Boarding Date";
+    public static final String CLASS = "Class";
 }
