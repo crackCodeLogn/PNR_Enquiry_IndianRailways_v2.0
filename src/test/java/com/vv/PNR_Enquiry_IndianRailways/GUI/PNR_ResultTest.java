@@ -3,7 +3,6 @@ package com.vv.PNR_Enquiry_IndianRailways.GUI;
 import com.vv.PNR_Enquiry_IndianRailways.Model.Passenger;
 import com.vv.PNR_Enquiry_IndianRailways.Model.PassengerList;
 import com.vv.PNR_Enquiry_IndianRailways.util.MapOfClassOfTravel;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,12 +20,10 @@ import static com.vv.PNR_Enquiry_IndianRailways.util.Constants.EMPTY_STR;
  * @since 04-05-2019
  */
 @RunWith(JUnit4.class)
-public class PNR_ResultTest {
+public class PNR_ResultTest extends ForGUI_Test {
 
     private PassengerList passengerList;
     private MapOfClassOfTravel mapOfClassOfTravel;
-
-    private final int TIME_BEFORE_KILLING_GUI = 2000;
 
     @Before
     public void before() {
@@ -59,8 +56,4 @@ public class PNR_ResultTest {
         });
     }
 
-    @After
-    public void tearDown() throws InterruptedException {
-        Thread.sleep(TIME_BEFORE_KILLING_GUI);
-    }
 }

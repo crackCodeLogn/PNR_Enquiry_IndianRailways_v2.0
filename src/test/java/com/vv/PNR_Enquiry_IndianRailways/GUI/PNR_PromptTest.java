@@ -1,5 +1,6 @@
 package com.vv.PNR_Enquiry_IndianRailways.GUI;
 
+import com.vv.PNR_Enquiry_IndianRailways.MainActivity;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,10 +16,11 @@ import javax.swing.*;
  * @since 04-05-2019
  */
 @RunWith(MockitoJUnitRunner.class)
-public class PNR_PromptTest {
+public class PNR_PromptTest extends ForGUI_Test {
 
     @Mock
     JFrame jFrame;
+
     private PNR_Prompt pnr_prompt;
 
     @Before
@@ -39,5 +41,10 @@ public class PNR_PromptTest {
         Assert.assertFalse(pnr_prompt.isPNR_Valid("ABCDEFGHIJ"));
         Assert.assertFalse(pnr_prompt.isPNR_Valid("aBCDvFGHIJ"));
         Assert.assertFalse(pnr_prompt.isPNR_Valid("aBCDvFGHIJ"));
+    }
+
+    @Test
+    public void launchUI() {
+        MainActivity.main(null);
     }
 }
