@@ -1,3 +1,4 @@
+
 package com.vv.PNR_Enquiry_IndianRailways;
 
 import com.vv.PNR_Enquiry_IndianRailways.HttpsAcquirer.PNR_EnquirerHttps;
@@ -9,6 +10,10 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.Objects;
+
+import static com.vv.PNR_Enquiry_IndianRailways.util.Constants.*;
+import static com.vv.PNR_Enquiry_IndianRailways.util.Helper.showErrorMsgDialog;
 
 /**
  * @author Vivek
@@ -22,11 +27,10 @@ import java.io.IOException;
  */
 public class MainActivity extends JFrame {
 
-    public final static String smallLogoPath = "/logoIR_small32.png";
-    public final static String mediumLogoPath = "/logoIR_medium256.png";
-    public final static String bigLogoPath = "/logoIR_full1024.png";
     private final static Logger logger = LoggerFactory.getLogger(MainActivity.class);
-    private static final JTextField textPNR = new JTextField(10);
+
+    private static final JTextField textPNR = new JTextField(PNR_ENTRY_NUM_COLUMNS);
+    private final FlowLayout FLOW_LAYOUT = new FlowLayout();
     public static boolean disableAll = false;
 
     @Nullable
@@ -40,6 +44,7 @@ public class MainActivity extends JFrame {
      * Switches on the interface, so that the next input can be taken
      */
     public static void performEnabling() {
+        logger.info("Enabling all");
         textPNR.setEnabled(true);
 
         if (buttonSearch != null) buttonSearch.setEnabled(true);
@@ -52,30 +57,28 @@ public class MainActivity extends JFrame {
             MainActivity mainActivity = new MainActivity();
             JFrame frame = mainActivity.MainActivity_setUI(new JFrame());
             frame.pack();
-            frame.setLocationRelativeTo(new JFrame());
+            frame.setLocationRelativeTo(frame);
             try {
-
                 Image image = ImageIO.read(MainActivity.class.getResourceAsStream(smallLogoPath));
                 frame.setIconImage(image);
             } catch (Exception e1) {
-                logger.error("Small logo path not found.. Error : ", e1);
-                System.exit(-1);
+                logger.error("Small logo path not found... Error : ", e1);
             }
             frame.setVisible(true);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         });
     }
 
-    public JFrame MainActivity_setUI(JFrame frame) {
-        frame.setTitle("PNR Enquirer");
-        frame.setLayout(new FlowLayout());
+    private JFrame MainActivity_setUI(JFrame frame) {
+        frame.setTitle(PNR_ENQUIRER);
+        frame.setLayout(FLOW_LAYOUT);
 
-        final JLabel displayPNR = new JLabel("Enter the PNR ");
+        final JLabel displayPNR = new JLabel(TEXT_PNR_PROMPT);
         frame.add(displayPNR);
 
         frame.add(textPNR);
 
-        buttonSearch = new JButton("SEARCH");
+        buttonSearch = new JButton(SEARCH);
         buttonSearch.addActionListener(e -> {
             final String pnr = textPNR.getText();
             if (pnr.length() != 0) {
@@ -92,42 +95,26 @@ public class MainActivity extends JFrame {
                                 }
                             }).start();
                         }
-                        /*
-                        if(!disableAll){
-                            disableAll = true;
-                            performDisabling();
-                            //PNR_EnquirerHttps.PNR_EnquirerHttpsRunner(pnr);
-                            new PNR_EnquirerHttps(pnr);
-
-                            /*
-                            while(PNR_EnquirerHttps.loopON){
-
-                            }
-
-                        }
-                        */
                     } catch (Exception e1) {
-                        System.out.println("Exception occurred : " + e1);
+                        logger.error("Exception occurred : ", e1);
                     }
                 } else {
-                    System.out.println("Invalid PNR!");
-                    Toolkit.getDefaultToolkit().beep();
-                    JOptionPane.showMessageDialog(MainActivity.this, "Invalid PNR!!", "Error", JOptionPane.ERROR_MESSAGE);
+                    logger.warn("Invalid PNR!");
+                    showErrorMsgDialog(MainActivity.this, "Invalid PNR!!");
                 }
             } else {
-                System.out.println("Empty!");
-                Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(MainActivity.this, "PNR length can't be 0!!", "Error", JOptionPane.ERROR_MESSAGE);
+                logger.warn("Empty!");
+                showErrorMsgDialog(MainActivity.this, "PNR length can't be 0!!");
             }
         });
         frame.add(buttonSearch);
 
-        buttonExit = new JButton("EXIT");
-        buttonExit.addActionListener(e -> System.exit(0));
+        buttonExit = new JButton(EXIT);
+        buttonExit.addActionListener(e -> System.exit(ZERO));
         frame.add(buttonExit);
 
-        buttonReset = new JButton("RESET");
-        buttonReset.addActionListener(e -> textPNR.setText(""));
+        buttonReset = new JButton(RESET);
+        buttonReset.addActionListener(e -> textPNR.setText(EMPTY_STR));
         frame.add(buttonReset);
         return frame;
     }
@@ -136,27 +123,26 @@ public class MainActivity extends JFrame {
      * Verifies whether the input PNR is valid or not
      *
      * @param pnr
-     * @return
+     * @return boolean value stating the validity of the pnr
      */
-    private boolean isPNR_Valid(String pnr) {
-        boolean isValid = false;
-        if (pnr.length() == 10) {
+    boolean isPNR_Valid(String pnr) {
+        logger.info("PNR Received for validation : {}", pnr);
+        boolean isValidPNR = false;
+        if (Objects.nonNull(pnr) && pnr.length() == PNR_LENGTH) {
             int i;
-            for (i = 0; i < pnr.length(); i++) {
-                char ch = pnr.charAt(i);
-                if (!Character.isDigit(ch)) break;
-            }
-            if (i == 10) isValid = true;
+            for (i = 0; i < pnr.length(); i++) if (!Character.isDigit(pnr.charAt(i))) break;
+            if (i == 10) isValidPNR = true;
         }
-        return isValid;
+        return isValidPNR;
     }
 
     /**
      * Locking up the interface whilst the request is being processed
      */
-    public void performDisabling() {
-        System.out.println("Inside the disabling function");
+    private void performDisabling() {
+        logger.info("Disabling all");
         textPNR.setEnabled(false);
+
         if (buttonSearch != null) buttonSearch.setEnabled(false);
         if (buttonExit != null) buttonExit.setEnabled(false);
         if (buttonReset != null) buttonReset.setEnabled(false);
