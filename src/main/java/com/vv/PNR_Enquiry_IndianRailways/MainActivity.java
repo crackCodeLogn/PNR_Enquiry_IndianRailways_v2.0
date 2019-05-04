@@ -40,35 +40,6 @@ public class MainActivity extends JFrame {
     @Nullable
     private static JButton buttonReset = null;
 
-    /**
-     * Switches on the interface, so that the next input can be taken
-     */
-    public static void performEnabling() {
-        logger.info("Enabling all");
-        textPNR.setEnabled(true);
-
-        if (buttonSearch != null) buttonSearch.setEnabled(true);
-        if (buttonExit != null) buttonExit.setEnabled(true);
-        if (buttonReset != null) buttonReset.setEnabled(true);
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            MainActivity mainActivity = new MainActivity();
-            JFrame frame = mainActivity.MainActivity_setUI(new JFrame());
-            frame.pack();
-            frame.setLocationRelativeTo(frame);
-            try {
-                Image image = ImageIO.read(MainActivity.class.getResourceAsStream(smallLogoPath));
-                frame.setIconImage(image);
-            } catch (Exception e1) {
-                logger.error("Small logo path not found... Error : ", e1);
-            }
-            frame.setVisible(true);
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        });
-    }
-
     private JFrame MainActivity_setUI(JFrame frame) {
         frame.setTitle(PNR_ENQUIRER);
         frame.setLayout(FLOW_LAYOUT);
@@ -137,6 +108,18 @@ public class MainActivity extends JFrame {
     }
 
     /**
+     * Switches on the interface, so that the next input can be taken
+     */
+    public static void performEnabling() {
+        logger.info("Enabling all");
+        textPNR.setEnabled(true);
+
+        if (buttonSearch != null) buttonSearch.setEnabled(true);
+        if (buttonExit != null) buttonExit.setEnabled(true);
+        if (buttonReset != null) buttonReset.setEnabled(true);
+    }
+
+    /**
      * Locking up the interface whilst the request is being processed
      */
     private void performDisabling() {
@@ -146,5 +129,22 @@ public class MainActivity extends JFrame {
         if (buttonSearch != null) buttonSearch.setEnabled(false);
         if (buttonExit != null) buttonExit.setEnabled(false);
         if (buttonReset != null) buttonReset.setEnabled(false);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            MainActivity mainActivity = new MainActivity();
+            JFrame frame = mainActivity.MainActivity_setUI(new JFrame());
+            frame.pack();
+            frame.setLocationRelativeTo(frame);
+            try {
+                Image image = ImageIO.read(MainActivity.class.getResourceAsStream(smallLogoPath));
+                frame.setIconImage(image);
+            } catch (Exception e1) {
+                logger.error("Small logo path not found... Error : ", e1);
+            }
+            frame.setVisible(true);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        });
     }
 }
