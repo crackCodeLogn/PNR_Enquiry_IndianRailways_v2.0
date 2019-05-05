@@ -36,9 +36,9 @@ import java.util.List;
  */
 
 @Deprecated
-public class DirtyRunner {
+public class CrudeRunner {
 
-    private static final Logger logger = LoggerFactory.getLogger(DirtyRunner.class);
+    private static final Logger logger = LoggerFactory.getLogger(CrudeRunner.class);
 
     static ArrayList<String> faultyPNR = new ArrayList<>();
     private JFrame independantForJOptionPane = new JFrame();
@@ -60,7 +60,7 @@ public class DirtyRunner {
 
         for (; sPNR <= ePNR; sPNR++, tr++) {
             logger.info("Sending in the entry number : {} --> ", tr, sPNR);
-            new DirtyRunner().PNR_EnquirerHttpsRunner(Long.toString(sPNR));
+            new CrudeRunner().PNR_EnquirerHttpsRunner(Long.toString(sPNR));
         }
         logger.info("NUMBER OF FLUSHED / NOT ASSIGNED PNR : {}", faultyPNR.size());
         faultyPNR.forEach(logger::info);
