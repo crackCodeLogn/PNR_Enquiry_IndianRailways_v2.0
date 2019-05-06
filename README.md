@@ -9,4 +9,10 @@ This program was made using Idea IntelliJ Community Edition/
 
 The starting point of the program is MainActivity.java
 
-This is the annotated version of the main branch, and contains some implementation of the checker framework.
+# What's new?
+i. This version contains some implementation of the checker framework.
+ii. The code has been transformed into a more testable and maintainable way.
+iii. The classses' responsibilities have been distributed and i have tried to achieve '1 class 1 role'
+iv. Unit tests have been included
+v. Project base has been shifted to Maven
+vi. Dedicated class for Constants and Helpers to reduce clutter in main code
