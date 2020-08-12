@@ -1,4 +1,4 @@
-package com.vv.PNR_Enquiry_IndianRailways;
+package com.vv.PNR_Enquiry_IndianRailways.util;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +10,7 @@ import java.util.Map;
  * @since 04-08-2017
  */
 public class MapOfClassOfTravel {
-    protected static Map<String, String> map = new HashMap<String, String>();
+    private static Map<String, String> map = new HashMap<>();
 
     /*
     public MapOfClassOfTravel(){
@@ -34,7 +34,7 @@ public class MapOfClassOfTravel {
         map.put("Second Sitting", "2S -- Second Sitting; -. -");
     }
 
-    public static Map<String, String> getMap() {
+    public Map<String, String> getMap() {
         return map;
     }
 }

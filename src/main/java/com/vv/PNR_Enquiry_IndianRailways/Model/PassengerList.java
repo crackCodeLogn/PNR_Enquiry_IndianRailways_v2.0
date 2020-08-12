@@ -6,19 +6,13 @@ import java.util.List;
 /**
  * @author Vivek
  * @version 1.0
- * @lastMod 16-03-2018
- * @lastMod_details -> Changes made in order to accomodate the usage of checker framework's annotations
+ * @lastMod 04-05-2019
  * @since 04-08-2017
  */
 
-//@SuppressWarnings("initialization.fields.uninitialized")
 public class PassengerList {
-    private List<Passenger> listOfPassengers;
 
-    public PassengerList() {
-        listOfPassengers = new ArrayList<>();
-        //to deal with the suppress warning
-    }
+    private List<Passenger> listOfPassengers = new ArrayList<>();
 
     public List<Passenger> getListOfPassengers() {
         return listOfPassengers;
