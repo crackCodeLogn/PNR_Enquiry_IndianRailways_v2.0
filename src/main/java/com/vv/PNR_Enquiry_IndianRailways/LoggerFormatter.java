@@ -17,7 +17,7 @@ public class LoggerFormatter {
             public String format(LogRecord record) {
                 //return record.getSourceClassName() + " :: " + record.getSourceMethodName() + " -- " + record.getMessage() + "\n";
                 //changing this line for the DirtyRunner file testing
-                return record.getMessage()+"\n";
+                return record.getMessage() + "\n";
             }
         });
         logger.addHandler(handler);
