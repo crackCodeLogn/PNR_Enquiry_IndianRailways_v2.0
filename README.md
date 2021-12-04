@@ -16,7 +16,6 @@ status of the passengers on the ticket.
 ## Showcase:
 
 Screenshots are in the 'showcase' folder.
-
 ![alt text](showcase/only_input_prompt.png)
 ![alt text](showcase/result_multiple_psgn_confirm_ticket_2022_SL.png)
 ![alt text](showcase/result_single_psgn_confirm_ticket_2021_3AC.png)
