@@ -1,38 +1,42 @@
-package com.vv.PNR_Enquiry_IndianRailways.GUI;
+package com.vv.indian_railways.enquiry.pnr.ui;
 
-import com.vv.PNR_Enquiry_IndianRailways.HttpsAcquirer.PNR_EnquirerHttps;
-import org.checkerframework.checker.nullness.qual.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.vv.indian_railways.enquiry.pnr.remote.PnrEnquirer;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Objects;
 
-import static com.vv.PNR_Enquiry_IndianRailways.util.Constants.*;
-import static com.vv.PNR_Enquiry_IndianRailways.util.Helper.showErrorMsgDialog;
+import static com.vv.indian_railways.enquiry.pnr.constants.Constants.*;
+import static com.vv.indian_railways.enquiry.pnr.util.Helper.showErrorMsgDialog;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 /**
  * @author Vivek
  * @version 1.0
+ * @lastMod 04-12-2021
  * @since 04-05-2019
  */
-public class PNR_Prompt extends JFrame {
+@Slf4j
+public class PnrPrompt extends JFrame {
 
-    private static final Logger logger = LoggerFactory.getLogger(PNR_Prompt.class);
+    private static final String SEARCH = "SEARCH";
+    private static final String EXIT = "EXIT";
+    private static final String RESET = "RESET";
+    private static final String TITLE_PNR_ENQUIRER = "PNR Enquiry";
+    private static final String TEXT_PNR_PROMPT = "Enter the PNR ";
 
-    private final JTextField textPNR = new JTextField(PNR_ENTRY_NUM_COLUMNS);
-    public boolean disableAll = false;
-    @Nullable
-    private JButton buttonSearch;
-    @Nullable
-    private JButton buttonExit;
-    private final FlowLayout flowLayout = new FlowLayout();
-    @Nullable
-    private JButton buttonReset;
+    private final JTextField textPNR;
+    private final JButton buttonSearch;
+    private final JButton buttonExit;
+    private final JButton buttonReset;
+    private boolean disableAll = false;
 
-    public PNR_Prompt(JFrame frame) {
+    public PnrPrompt(JFrame frame) {
+        textPNR = new JTextField(PNR_ENTRY_NUM_COLUMNS);
         frame.setTitle(TITLE_PNR_ENQUIRER);
+
+        FlowLayout flowLayout = new FlowLayout();
         frame.setLayout(flowLayout);
 
         final JLabel displayPNR = new JLabel(TEXT_PNR_PROMPT);
@@ -44,28 +48,28 @@ public class PNR_Prompt extends JFrame {
         buttonSearch.addActionListener(e -> {
             final String pnr = textPNR.getText();
             if (!pnr.isEmpty()) {
-                if (isPNR_Valid(pnr)) {
+                if (isPnrValid(pnr)) {
                     try {
-                        if (!disableAll) {
+                        if (!isDisableAll()) {
                             new Thread(() -> {
-                                disableAll = true;
+                                setDisableAll(true);
                                 performDisabling();
                                 try {
-                                    new PNR_EnquirerHttps(this).PNR_EnquirerHttpsRunner(pnr); //modified
+                                    new PnrEnquirer(this).getPnrDetailAndDisplay(pnr); //modified
                                 } catch (Exception e1) {
-                                    logger.error("Error in the calling for PNR https enquiry : ", e1);
+                                    log.error("Error in the calling for PNR https enquiry : ", e1);
                                 }
                             }).start();
                         }
                     } catch (Exception e1) {
-                        logger.error("Exception occurred in outer thread gen : ", e1);
+                        log.error("Exception occurred in outer thread gen : ", e1);
                     }
                 } else {
-                    logger.warn("Invalid PNR!");
+                    log.warn("Invalid PNR!");
                     showErrorMsgDialog(this, "Invalid PNR!!");
                 }
             } else {
-                logger.warn("Empty!");
+                log.warn("Empty!");
                 showErrorMsgDialog(this, "PNR length can't be 0!!");
             }
         });
@@ -76,15 +80,23 @@ public class PNR_Prompt extends JFrame {
         frame.add(buttonExit);
 
         buttonReset = new JButton(RESET);
-        buttonReset.addActionListener(e -> textPNR.setText(EMPTY_STR));
+        buttonReset.addActionListener(e -> textPNR.setText(EMPTY));
         frame.add(buttonReset);
+    }
+
+    public boolean isDisableAll() {
+        return disableAll;
+    }
+
+    public void setDisableAll(boolean disableAll) {
+        this.disableAll = disableAll;
     }
 
     /**
      * Switches on the interface, so that the next input can be taken
      */
     public void performEnabling() {
-        logger.info("Enabling all");
+        log.info("Enabling all");
         textPNR.setEnabled(true);
 
         if (buttonSearch != null) buttonSearch.setEnabled(true);
@@ -96,7 +108,7 @@ public class PNR_Prompt extends JFrame {
      * Locking up the interface whilst the request is being processed
      */
     private void performDisabling() {
-        logger.info("Disabling all");
+        log.info("Disabling all");
         textPNR.setEnabled(false);
 
         if (buttonSearch != null) buttonSearch.setEnabled(false);
@@ -110,8 +122,8 @@ public class PNR_Prompt extends JFrame {
      * @param pnr
      * @return boolean value stating the validity of the pnr
      */
-    boolean isPNR_Valid(String pnr) {
-        logger.info("PNR Received for validation : {}", pnr);
+    boolean isPnrValid(String pnr) {
+        log.info("PNR Received for validation : {}", pnr);
         boolean isValidPNR = false;
         if (Objects.nonNull(pnr) && pnr.length() == PNR_LENGTH) {
             int i;
@@ -120,5 +132,4 @@ public class PNR_Prompt extends JFrame {
         }
         return isValidPNR;
     }
-
 }

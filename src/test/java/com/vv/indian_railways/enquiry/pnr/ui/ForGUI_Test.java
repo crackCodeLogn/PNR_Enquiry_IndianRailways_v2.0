@@ -1,6 +1,6 @@
-package com.vv.PNR_Enquiry_IndianRailways.GUI;
+package com.vv.indian_railways.enquiry.pnr.ui;
 
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 
 /**
  * @author Vivek
@@ -8,12 +8,10 @@ import org.junit.After;
  * @since 04-05-2019
  */
 public abstract class ForGUI_Test {
-
     private final int TIME_BEFORE_KILLING_TEST_GUI = 2000;
 
-    @After
+    @AfterEach
     public void tearDown() throws InterruptedException {
         Thread.sleep(TIME_BEFORE_KILLING_TEST_GUI);
     }
-
 }

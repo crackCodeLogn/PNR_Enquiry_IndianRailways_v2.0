@@ -1,14 +1,14 @@
-package com.vv.PNR_Enquiry_IndianRailways.GUI;
+package com.vv.indian_railways.enquiry.pnr.ui;
 
-import com.vv.PNR_Enquiry_IndianRailways.Model.PassengerList;
-import com.vv.PNR_Enquiry_IndianRailways.util.MapOfClassOfTravel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.vv.indian_railways.enquiry.pnr.model.Passenger;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
-import static com.vv.PNR_Enquiry_IndianRailways.util.Constants.*;
+import static com.vv.indian_railways.enquiry.pnr.util.MapOfClassOfTravel.TRAVEL_CLASS_MAP;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 /**
  * the gridy and gridx distribution:-
@@ -24,18 +24,28 @@ import static com.vv.PNR_Enquiry_IndianRailways.util.Constants.*;
  *
  * @author Vivek
  * @version 1.0
+ * @lastMod 04-12-2021
  * @since 04-08-2017
  */
-public class PNR_Result {
+@Slf4j
+public class PnrResult {
 
-    private final Logger logger = LoggerFactory.getLogger(PNR_Result.class);
-
-    private final GridBagLayout gridBagLayout = new GridBagLayout();
     private final JPanel mainPanel = new JPanel();
-
     private final String[] columns = {"Number", "Booking Status", "Current Status"};
 
-    public PNR_Result(String pnr, String trainNumber, String trainName, String boardingStation, String destinationStation, String boardingDate, String classOfTravel, String chartStatus, PassengerList listOfPassengers, MapOfClassOfTravel mapOfClassOfTravel) {
+    private static final String CHART = "Chart";
+    private static final String PNR = "PNR";
+    private static final String TRAIN_NUMBER = "Train Number";
+    private static final String TRAIN_NAME = "Train Name";
+    private static final String FROM = "From";
+    private static final String TO = "To";
+    private static final String DEST = "Dest";
+    private static final String BOARDING_DATE = "Boarding Date";
+    private static final String CLASS = "Class";
+
+    public PnrResult(String pnr, String trainNumber, String trainName, String boardingStation, String destinationStation, String boardingDate, String classOfTravel, String chartStatus,
+                     List<Passenger> passengerList) {
+        GridBagLayout gridBagLayout = new GridBagLayout();
         mainPanel.setLayout(gridBagLayout);
         GridBagConstraints gbc = new GridBagConstraints();
 
@@ -177,7 +187,7 @@ public class PNR_Result {
         gbc.weightx = 1;
         displayValueClass.setEditable(false);
 
-        classOfTravel = mapOfClassOfTravel.getMap().getOrDefault(classOfTravel, EMPTY_STR);
+        classOfTravel = TRAVEL_CLASS_MAP.getOrDefault(classOfTravel, EMPTY);
         displayValueClass.setText(classOfTravel);
         mainPanel.add(displayValueClass, gbc);
 
@@ -203,15 +213,16 @@ public class PNR_Result {
         displayValueChart.setText(chartStatus);
         mainPanel.add(displayValueChart, gbc);
 
-        //String rows[][] = {{"1", "B2", "B2"},
-        //                   {"2", "B3", "B3"}};
-        int sizeOfListOfPassengers = listOfPassengers.getListOfPassengers().size();
-        logger.info("List of passengers from the gui part : {}", sizeOfListOfPassengers);
+        /*String rows[][] = {{"1", "B2", "B2"},
+                             {"2", "B3", "B3"}};*/
+        int sizeOfListOfPassengers = passengerList.size();
+        log.info("List of passengers from the gui part : {}", sizeOfListOfPassengers);
         String[][] rows = new String[sizeOfListOfPassengers][3];
         for (int i = 0; i < sizeOfListOfPassengers; i++) {
-            rows[i][0] = String.valueOf(listOfPassengers.getListOfPassengers().get(i).getNumber());
-            rows[i][1] = listOfPassengers.getListOfPassengers().get(i).getBookingStatus();
-            rows[i][2] = listOfPassengers.getListOfPassengers().get(i).getCurrentStatus();
+            rows[i][0] = String.valueOf(i + 1);
+            Passenger passenger = passengerList.get(i);
+            rows[i][1] = String.format("%s,%s,%s", passenger.getBookingCoachId(), passenger.getBookingBerthNo(), passenger.getBookingStatus().getCode());
+            rows[i][2] = String.format("%s,%s,%s", passenger.getCurrentCoachId(), passenger.getCurrentBerthNo(), passenger.getCurrentBookingStatus().getCode());
         }
 
         JTable displayTable = new JTable(rows, columns);
@@ -232,5 +243,4 @@ public class PNR_Result {
     public JPanel getUI() {
         return mainPanel;
     }
-
 }
