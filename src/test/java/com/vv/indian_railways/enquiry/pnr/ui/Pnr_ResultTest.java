@@ -47,7 +47,7 @@ class Pnr_ResultTest extends ForGUI_Test {
             JFrame frame = new JFrame("PNR sample product");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setLocationRelativeTo(null);
-            frame.getContentPane().add(new PnrResult(EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, passengers).getUI());
+            frame.getContentPane().add(new PnrResult(EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, passengers).getUI());
 
             // Display the window.
             frame.pack();

@@ -33,6 +33,7 @@ public class Ticket {
     private String fareClass;
     private String trainType;
     private boolean chartPrepared;
+    private String rakeType;
 
     private List<Passenger> passengers;
 
@@ -57,6 +58,7 @@ public class Ticket {
                 .append("fareClass", fareClass)
                 .append("trainType", trainType)
                 .append("chartPrepared", chartPrepared)
+                .append("rakeType", rakeType)
                 .append("passengers", passengers)
                 .toString();
     }

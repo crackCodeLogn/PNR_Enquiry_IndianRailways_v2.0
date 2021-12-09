@@ -42,9 +42,11 @@ public class PnrResult {
     private static final String DEST = "Dest";
     private static final String BOARDING_DATE = "Boarding Date";
     private static final String CLASS = "Class";
+    private static final String FARE = "Fare";
+    private static final String RAKE = "Rake";
 
     public PnrResult(String pnr, String trainNumber, String trainName, String boardingStation, String destinationStation, String boardingDate, String classOfTravel, String chartStatus,
-                     List<Passenger> passengerList) {
+                     String fare, String rake, List<Passenger> passengerList) {
         GridBagLayout gridBagLayout = new GridBagLayout();
         mainPanel.setLayout(gridBagLayout);
         GridBagConstraints gbc = new GridBagConstraints();
@@ -173,7 +175,7 @@ public class PnrResult {
         gbc.gridwidth = 1;
         gbc.gridx = 0;
         gbc.gridy = 5;
-        gbc.insets = new Insets(5, 10, 8, 0);
+        gbc.insets = new Insets(5, 10, 0, 0);
         gbc.weightx = 1;
         mainPanel.add(displayClass, gbc);
 
@@ -183,7 +185,7 @@ public class PnrResult {
         gbc.gridwidth = 1;
         gbc.gridx = 1;
         gbc.gridy = 5;
-        gbc.insets = new Insets(5, 10, 8, 200);
+        gbc.insets = new Insets(5, 10, 0, 200);
         gbc.weightx = 1;
         displayValueClass.setEditable(false);
 
@@ -197,7 +199,7 @@ public class PnrResult {
         gbc.gridwidth = 1;
         gbc.gridx = 2;
         gbc.gridy = 5;
-        gbc.insets = new Insets(5, -80, 8, 0);
+        gbc.insets = new Insets(5, -80, 0, 0);
         gbc.weightx = 1;
         mainPanel.add(displayChart, gbc);
 
@@ -207,16 +209,59 @@ public class PnrResult {
         gbc.gridwidth = 1;
         gbc.gridx = 3;
         gbc.gridy = 5;
-        gbc.insets = new Insets(5, -30, 8, 10);
+        gbc.insets = new Insets(5, -30, 0, 10);
         gbc.weightx = 1;
         displayValueChart.setEditable(false);
         displayValueChart.setText(chartStatus);
         mainPanel.add(displayValueChart, gbc);
 
+        JLabel displayFare = new JLabel(FARE);
+        gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridwidth = 1;
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        gbc.insets = new Insets(5, 10, 8, 0);
+        gbc.weightx = 1;
+        mainPanel.add(displayFare, gbc);
+
+        JTextField displayValueFare = new JTextField(10);
+        gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridwidth = 1;
+        gbc.gridx = 1;
+        gbc.gridy = 6;
+        gbc.insets = new Insets(5, 10, 8, 200);
+        gbc.weightx = 1;
+        displayValueFare.setEditable(false);
+        displayValueFare.setText(fare);
+        mainPanel.add(displayValueFare, gbc);
+
+        JLabel displayRake = new JLabel(RAKE);
+        gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridwidth = 1;
+        gbc.gridx = 2;
+        gbc.gridy = 6;
+        gbc.insets = new Insets(5, -80, 8, 0);
+        gbc.weightx = 1;
+        mainPanel.add(displayRake, gbc);
+
+        JTextField displayValueRake = new JTextField(15);
+        gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridwidth = 1;
+        gbc.gridx = 3;
+        gbc.gridy = 6;
+        gbc.insets = new Insets(5, -30, 8, 10);
+        gbc.weightx = 1;
+        displayValueRake.setEditable(false);
+        displayValueRake.setText(rake);
+        mainPanel.add(displayValueRake, gbc);
+
         /*String rows[][] = {{"1", "B2", "B2"},
                              {"2", "B3", "B3"}};*/
         int sizeOfListOfPassengers = passengerList.size();
-        log.info("List of passengers from the gui part : {}", sizeOfListOfPassengers);
         String[][] rows = new String[sizeOfListOfPassengers][3];
         for (int i = 0; i < sizeOfListOfPassengers; i++) {
             rows[i][0] = String.valueOf(i + 1);
@@ -234,7 +279,7 @@ public class PnrResult {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridwidth = 4;
         gbc.gridx = 0;
-        gbc.gridy = 6;
+        gbc.gridy = 7;
         gbc.insets = new Insets(5, 10, 10, 10);
         gbc.weightx = 1;
         mainPanel.add(scrollPane, gbc);
