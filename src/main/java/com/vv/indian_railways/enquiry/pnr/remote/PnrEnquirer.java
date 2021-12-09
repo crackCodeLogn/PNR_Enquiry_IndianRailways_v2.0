@@ -66,15 +66,7 @@ public class PnrEnquirer {
             final String classOfTravel = ticket.getFareClass();
             final String chartStatus = ticket.isChartPrepared() ? "PREPARED" : "NOT PREPARED";
 
-            log.info("The extracted details:-");
-            log.info("PNR : {}", requestedPnr);
-            log.info("Train number : {}", trainNumber);
-            log.info("Train name : {}", trainName);
-            log.info("Boarding station : {}", boardingStation);
-            log.info("Destination station : {}", destinationStation);
-            log.info("Boarding date : {}", boardingDate);
-            log.info("Class : {}", classOfTravel);
-            log.info("Chart status : {}", chartStatus);
+            log.info("Chart: {}, Boarding station: {}, Destination station: {}, Ticket: {}", chartStatus, boardingStation, destinationStation, ticket);
             log.info("The number of passengers in this ticket : {}", ticket.getPassengers().size());
 
             if (!ticket.getPassengers().isEmpty()) {
@@ -83,7 +75,7 @@ public class PnrEnquirer {
                     JFrame frame = new JFrame(TITLE_PNR_BASED_TICKET_DETAILS);
                     frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
                     frame.getContentPane().add(new PnrResult(requestedPnr, trainNumber, trainName, boardingStation, destinationStation,
-                            boardingDate, classOfTravel, chartStatus, ticket.getPassengers()).getUI());
+                            boardingDate, classOfTravel, chartStatus, ticket.getFare(), ticket.getRakeType(), ticket.getPassengers()).getUI());
                     frame.pack();
                     frame.setIconImage(Helper.smallIconForFrame);
                     frame.setResizable(false);
